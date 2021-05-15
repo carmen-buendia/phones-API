@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
-const phonesSchema = new mongoose.Schema({
+const phonesSchema =  new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     id: {
         type: Number,
         required: true,
     },
       name: {
+        type: String,
+        required: true,
+      },
+      manufactured: {
         type: String,
         required: true,
       },
@@ -23,13 +27,10 @@ const phonesSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      path: {
-        type: String,
-        required: true,
-      },
       imageFileName: {
         data: Buffer,
-        contentType: String,
+        type: String,
+        default: []
       },
       screen: {
         type: String,
@@ -46,14 +47,8 @@ const phonesSchema = new mongoose.Schema({
       date: {
         type: Date,
         default: Date.now,
-      },
-      manufactured: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Manufactured',
-        autopopulate: true
-      }],
+      }
 });
-phonesSchema.plugin(require('mongoose-autopopulate'));
 
-const model = mongoose.model("Phones", phonesSchema);
+const model = mongoose.model('Phones', phonesSchema);
 module.exports = model;

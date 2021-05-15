@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const router = require('../controllers/phonesController');
 
 mongoose.connect('mongodb://localhost:27017/phonesShopDatabase', {
     useFindAndModify: false,
@@ -13,3 +14,5 @@ mongoose.connect('mongodb://localhost:27017/phonesShopDatabase', {
     mongoose.Promise = global.Promise;
 
 let db;
+
+module.exports = router;
