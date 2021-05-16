@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+const bodyParser = require("body-parser");
 const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose');
 const path = require('path');
@@ -15,13 +16,20 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload({
   useTempFiles: true
 }));
 
 // routes  
 app.use('/api', require('./routes/productsRoutes'));
+app.use('/api', require('./routes/categoryRoutes'));
+app.use('/api', require('./routes/uploadRoutes'));
+app.use('/api', require('./routes/userRoutes'));
+
+
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL

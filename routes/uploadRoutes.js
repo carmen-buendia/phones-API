@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const cloudinary = require("cloudinary");
+const auth = require('../middleware/auth')
+const authAdmin = require('../middleware/authAdmin')
 const fs = require("fs");
 
 // we will upload image on cloudinary
@@ -9,8 +11,8 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// Upload image only admin can use
-router.post("/upload", (req, res) => {
+// Upload image only 
+router.post("/upload",auth , authAdmin, (req, res) => {
   try {
     if (!req.files || Object.keys(req.files).length === 0)
       return res.status(400).json({ msg: "No files were uploaded." });
@@ -21,7 +23,7 @@ router.post("/upload", (req, res) => {
       return res.status(400).json({ msg: "Size too large" });
     }
 
-    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png" && filemimetype !== "image/jpg") {
       removeTmp(file.tempFilePath);
       return res.status(400).json({ msg: "File format is incorrect." });
     }
@@ -42,8 +44,8 @@ router.post("/upload", (req, res) => {
   }
 });
 
-// Delete image only admin can use
-router.post("/destroy", (req, res) => {
+// Delete image 
+router.post("/destroy", auth , authAdmin, (req, res) => {
   try {
     const { public_id } = req.body;
     if (!public_id) return res.status(400).json({ msg: "No images Selected" });
