@@ -1,4 +1,4 @@
-const { productModel } = require("../database/mongo/index");
+const { productModel } = require("../database/index");
 
 // Filter, sorting and paginating
 class APIfeatures {
