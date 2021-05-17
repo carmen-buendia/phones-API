@@ -1,4 +1,6 @@
-const { userModel } = require('../database/index');
+const { userModel, paymentModel } = require('../database/index');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const userCtrl = {
   register: async (req, res) =>{
@@ -25,9 +27,9 @@ const userCtrl = {
         const refreshtoken = createRefreshToken({id: newUser._id})
 
         res.cookie('refreshtoken', refreshtoken, {
-            httpOnly: true,
-            path: '/user/refresh_token',
-            maxAge: 7*24*60*60*1000 // 7d
+            // httpOnly: true,
+            // path: '/refresh_token',
+            // maxAge: 7*24*60*60*1000 // 7d
         })
 
         res.json({accesstoken})
@@ -48,15 +50,17 @@ login: async (req, res) =>{
 
         // If login success , create access token and refresh token
         const accesstoken = createAccessToken({id: user._id})
-        const refreshtoken = createRefreshToken({id: user._id})
+        //const refreshtoken = createRefreshToken({id: user._id})
 
-        res.cookie('refreshtoken', refreshtoken, {
-            httpOnly: true,
-            path: '/user/refresh_token',
-            maxAge: 7*24*60*60*1000 // 7d
+        //res.cookie('refreshtoken', refreshtoken, {
+            // httpOnly: true,
+            // path: '/refresh_token',
+            // maxAge: 7*24*60*60*1000 // 7d
+        //})
+        console.log(accesstoken)
+        //Hardcoded token for testing app
+        res.json({accesstoken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYTJhMDQ5ZDdjYTNhMmE5OTY3Y2JhMSIsImlhdCI6MTYyMTI3MDY4MywiZXhwIjoxNjIxMjcxMzQzfQ.WtyVYGYMKuFDq22HyN4xEtk8uO9DDnumAnS169XfGog'
         })
-
-        res.json({accesstoken})
 
     } catch (err) {
         return res.status(500).json({msg: err.message})
@@ -64,7 +68,7 @@ login: async (req, res) =>{
 },
 logout: async (req, res) =>{
     try {
-        res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+        res.clearCookie('refreshtoken', {path: '/api/refresh_token'})
         return res.json({msg: "Logged out"})
     } catch (err) {
         return res.status(500).json({msg: err.message})
@@ -114,7 +118,7 @@ addCart: async (req, res) =>{
 },
 history: async(req, res) =>{
     try {
-        const history = await Payments.find({user_id: req.user.id})
+        const history = await paymentModel.find({user_id: req.user.id})
 
         res.json(history)
     } catch (err) {
