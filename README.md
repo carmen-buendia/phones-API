@@ -11,3 +11,6 @@ nodemon server.js
 
 # Database:
 mongo Atlas
+
+# Server run on: 
+http://localhost:5000 
