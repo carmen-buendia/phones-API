@@ -1,18 +1,19 @@
 # phones-API
 Fullstack Code Test - API
 
-# Work in branch api
+# Work in branch:
+## api
 
 # Install dependencies for server:
-npm install
+## npm install
 
 
 # Run the Express server only:
-nodemon server.js
+## nodemon server.js
 
 
-# Database:
-mongo Atlas
+# Database host in:
+## mongo Atlas
 
 # Server run on: 
-http://localhost:5000 
+## http://localhost:5000 
